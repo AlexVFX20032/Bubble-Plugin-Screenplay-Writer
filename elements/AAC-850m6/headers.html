@@ -1,0 +1,134 @@
+<link rel="stylesheet" href="https://github.com/codex-team/editor.js/blob/next/public/assets/demo.css">
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.29.0/dist/editorjs.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+    
+    .custom-block {
+        text-align: left !important;
+        padding-left: 241.5px;
+        border-radius: 5px;
+        background-color: transparent;
+        font-family: 'Courier Prime', monospace;
+        white-space: nowrap;
+        text-wrap: wrap;
+        margin-top: 15px;
+    }
+
+    .dialog-block {
+        max-width: 470px;
+        margin: 10px 0;
+        margin-top: 0px;
+        margin-bottom: 15px;
+        padding-left: 101.6px;
+        background-color: transparent;
+        border-radius: 5px;
+        font-family: 'Courier Prime', monospace;
+        white-space: nowrap;
+        line-break: auto;
+        text-wrap: wrap;
+        line-height: 18px;
+    }
+
+    .parenthesis-block {
+ 		padding-left: 148px;
+        background-color: transparent;
+        border-radius: 5px;
+        font-family: 'Courier Prime', monospace;
+        white-space: nowrap;
+        text-wrap: wrap;
+    }
+
+    .parenthesis-content {
+        display: flex;
+        align-items: center;
+    }
+
+    .parenthesis-open,
+    .parenthesis-close {
+        font-size: 18px;
+        margin-right: 5px;
+    }
+
+    .parenthesis-text {
+        flex: 1;
+        white-space: nowrap;
+    }
+
+    .scene-block {
+        text-transform: uppercase;
+        background-color: #E6E6E6;
+        margin-left: -10px;
+        padding-left: 10px;
+        padding-bottom: 5px;
+        padding-top: 7px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        margin-top: 10px;
+        font-family: 'Courier Prime', monospace;
+        white-space: nowrap;
+        font-weight: bold;
+        text-wrap: wrap;
+        max-width: 610px;
+        padding-right: 10px;
+    }
+
+    .transition-block {
+        text-align: right;
+        max-width: 592px;
+    }
+    
+    .ce-paragraph {
+        margin-top: 5px;
+        padding-top 0px !important;
+        padding-bottom: 0px;
+        padding-right: 58px;
+        margin-bottom: 10px !important;
+        padding-right: 58px !important;
+        line-height: 18px;
+    }
+    
+    .cdx-block{
+     padding: 0px;   
+    }
+
+    .editor-container {
+        border: 0px solid black;
+        padding-left: 89px;
+        padding-right: 39px;
+        padding-top: 97px;
+        padding-bottom: 97px;
+        width: 100%;
+        min-height: 100%; /* Cambié el min-height a 29.7cm */
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden; /* Nuevo ajuste para permitir que el contenedor crezca dinámicamente */
+        margin-right: -23px;
+    }
+
+    .page-divider {
+        border-top: 0px solid black;
+        position: absolute;
+        width: 100%;
+    }
+
+    #editorjs {
+        width: 100%;
+        font-family: 'Courier Prime', monospace;
+        margin-top: 0px;
+        font-size: 16px !important;
+        line-height: 17px;
+    }
+    #pageHeightDisplay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: white;
+        padding: 5px;
+        font-size: 16px;
+    }
+    #save_bbdd_button {
+        display: none !important;
+    }
+</style>
