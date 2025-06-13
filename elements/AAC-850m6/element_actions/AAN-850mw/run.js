@@ -12,6 +12,21 @@ function(instance, properties, context) {
     this.isHandlingRemoteEvent = false;
     this.remoteBlockIds = new Set();
 
+    // Ensure remote cursor styles are added only once
+    if (!document.getElementById('remote-cursor-style')) {
+        const style = document.createElement('style');
+        style.id = 'remote-cursor-style';
+        style.textContent = `
+            .remote-cursor {
+                position: absolute;
+                width: 2px;
+                background: red;
+                z-index: 1000;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
     const createWebSocket = () => {
         const socket = new WebSocket('wss://free.blr2.piesocket.com/v3/1?api_key=4yn77E9zUO31vzW9fSgn6y66C96vpaZRYPJXO72l&notify_self=1');
 
