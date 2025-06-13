@@ -13,6 +13,5 @@ function(instance, context) {
             	document.getElementsByClassName('ce-toolbar__plus')[0].click();
             }
         }
-
     })
 }

@@ -21,7 +21,10 @@ function(instance, properties, context) {
 
         socket.onmessage = async (event) => {
             try {
-                const [uuid, socket_data] = JSON.parse(event.data);
+                const current_guion_id = window.location.pathname.split("/")[3]
+                const [uuid, guion_id, socket_data] = JSON.parse(event.data);
+
+                if(guion_id !== current_guion_id) return
                 if (uuid === this.current_user_uuid) return;
 
                 console.log("onmessage", [uuid, socket_data]);
@@ -33,18 +36,20 @@ function(instance, properties, context) {
                 switch (action) {
                     case "update":
                         this.isHandlingRemoteEvent = true;
-                        const elementToUpdate = document.querySelector(`[data-id="${block_id}"]`);
-                        const editableElement = elementToUpdate.querySelector('[contenteditable="true"]');
-                        if (editableElement) {
-                            editableElement.setAttribute('contenteditable', 'false');
-                            editableElement.textContent = block_data;
-                            editableElement.setAttribute('contenteditable', 'true');
-                        }
-                        this.isHandlingRemoteEvent = false;
+                        await this.editor.blocks.update(block_id, {
+                            text: block_data
+                        }, {test: 1} )
+                        setTimeout(() => {
+                            this.isHandlingRemoteEvent = false
+                        }, 500)
                         break;
                     case "delete":
-                        console.log("delete block", block_id);
-                        // Lógica de eliminación
+                        this.isHandlingRemoteEvent = true;
+                        const position = block_id ? await this.editor.blocks.getBlockIndex(block_id) : block_position
+                        await this.editor.blocks.delete(position)
+                        setTimeout(() => {
+                            this.isHandlingRemoteEvent = false
+                        }, 500)
                         break;
                     case "create":
                         this.isHandlingRemoteEvent = true;
@@ -79,12 +84,11 @@ function(instance, properties, context) {
 
     const socket = createWebSocket();
 
-    this.editor.configuration.onChange = (api, event) => {
+    const handleEventEditor = (event) => {
+        console.log("EVENT--", event);
         if (this.isHandlingRemoteEvent) {
             return;
         }
-
-        console.log("EVENT--", event);
 
         if (!event || !event.detail) {
             console.warn("Invalid event structure", event);
@@ -96,13 +100,15 @@ function(instance, properties, context) {
 
         if (!block) {
             console.warn("Block not found at index", event_index);
-            return;
+            // return;
         }
 
-        const block_id = block.id;
-        const block_data = block.holder.innerText;
+        const block_id = block?.id;
+        const block_data = block?.holder.innerText;
         const block_position = event.detail.index;
-        const block_type = block.name;
+        const block_type = block?.name;
+
+        console.log(block, block_id)
 
         if (this.remoteBlockIds.has(block_id)) {
             this.remoteBlockIds.delete(block_id); // Remover el bloque de la lista de bloques remotos procesados
@@ -123,7 +129,8 @@ function(instance, properties, context) {
                 break;
             case "block-removed":
                 action = "delete";
-                data.block_id = block_id;
+                // data.block_id = block_id;
+                data.block_position = block_position;
                 break;
             case "block-changed":
                 action = "update";
@@ -139,10 +146,31 @@ function(instance, properties, context) {
             action,
             data
         };
-        const my_socket_data = JSON.stringify([this.current_user_uuid, socket_data]);
+
+        const guion_id = window.location.pathname.split("/")[3]
+
+        const my_socket_data = JSON.stringify([this.current_user_uuid, guion_id , socket_data]);
 
         socket.send(my_socket_data);
+
+        // if(this.isTimeToSave || this.isTimeToSave === undefined) {
+        //     gg()
+        //     this.isTimeToSave = false
+        //     setTimeout(() => {
+        //         this.isTimeToSave = true
+        //     }, 5 * 60 * 1000)
+        // }
+
         console.log("Data sent to websocket", my_socket_data);
+    } 
+
+    this.editor.configuration.onChange = (api, event) => {
+        if(Array.isArray(event)) {
+            event.map(e => handleEventEditor(e))
+        }else {
+            handleEventEditor(event)
+        }
+
     };
 
     // Add listener for Enter key to detect block creation

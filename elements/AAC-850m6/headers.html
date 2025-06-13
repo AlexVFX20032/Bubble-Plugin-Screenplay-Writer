@@ -1,9 +1,50 @@
 <link rel="stylesheet" href="https://github.com/codex-team/editor.js/blob/next/public/assets/demo.css">
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.29.0/dist/editorjs.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.2/dist/editorjs.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/editorjs-annotation"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
 <style>
+     .hidden {
+        opacity: 0% !important;
+    }
+    @media print {
+            @page {
+                size: auto;
+                margin: 130mm;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .print-footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                font-size: 12px;
+            }
+
+            .print-footer::before {
+                content: "Creado con Crowdy.xyz";
+                float: left;
+                margin-left: 10px;
+            }
+
+            .print-footer::after {
+                content: counter(page);
+                float: right;
+                margin-right: 10px;
+            }
+
+            /* Ocultar cualquier header predeterminado del navegador */
+            header, footer {
+                display: none;
+            }
+        }
     
     .custom-block {
         text-align: left !important;
